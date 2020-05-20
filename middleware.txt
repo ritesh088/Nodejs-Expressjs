@@ -1,0 +1,49 @@
+//http://expressjs.com/en/guide/writing-middleware.html
+
+const express= require("express"); 
+const app=express(); 
+//app.use(express.static('public'))         // it use make public folder static
+ app.use('/abc', express.static('public'))  // it use for public folder name replace as abc but abc folder is not aval
+ app.get("/",(req, res)=>{           
+     res.sendFile(__dirname+ '/index.html');
+ });
+ 
+
+        app.get("/users",(req, res)=>{     
+            // console.log(req.params);
+            res.send("Hi users");
+            });
+
+        app.get("/users/profile",(req, res)=>{   
+         //app.post("/users/profile",(req, res)=>{    
+        res.send("Users profile access the data of Node js");
+         });
+ 
+        app.get("/users/:Id",(req, res)=>{     
+        // console.log(req.params);
+        res.send("Users access data id is:  " +req.params.Id);
+        });
+ 
+ 
+        app.get("/users/:Id/book/:BookId",(req, res)=>{    
+        // console.log(req.params);
+        res.send("Users access the data of Node js: " +req.params.Id + " Book Id: " +req.params.BookId);
+        });
+ 
+  
+ 
+        app.get("/users/:Id?",(req, res)=>{ 
+            if(req.params.Id ==undefined )
+            res.send("All Data Accessed");
+            else
+            res.send("Users Data: " +req.params.Id);
+        });   
+    
+             
+            
+        //app.get("/flights/:From?-:To?",(req, res)=>{   
+        app.get("/flights/:From?.:To?",(req, res)=>{    
+        console.log(req.params)
+        res.send("Search for flights" + " From " +req.params.From + " To " +req.params.To);
+     });   
+     app.listen(3000, ()=>console.log("Server running on port 3000"));

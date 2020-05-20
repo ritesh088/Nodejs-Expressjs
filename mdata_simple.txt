@@ -1,0 +1,42 @@
+// https://mongoosejs.com/docs/ read all links related to mangodb schema, conection,model,validation etc.....
+//npm install mongoose
+
+// reqiure mongoose Step 1
+var mongoose = require('mongoose'); // here var is used boz mangodb not support ECMA.
+// Step 2, then make schema define just like table filelds
+var employeeSchema = new mongoose.Schema({
+    name: String,
+    email: String,
+    etype: String,
+    hourlyrate: Number,
+    totalhour: Number,
+    total:Number,
+  });
+
+  //Step 5, create new methods of employeeSchema to show data in console with employee name by calling methods,
+  // with 'employees' object. which is created in Step 4.
+  employeeSchema.methods.totalSalary=function(){
+      console.log("Total Income of %s: Rs. %d:", this.name,this.totalhour*this.hourlyrate);
+  }
+
+
+
+  // Step 3, Create Model means table name and pass schema in model
+  //To use our schema definition, we need to convert our employeeSchema into a Model we can work with
+  //. To do so, we pass it into mongoose.model(modelName, schema):
+
+  var employeemodel = mongoose.model('Employee', employeeSchema);
+  // Step 4, now create object of employeemodel and pass the value of schema
+  employees = new employeemodel({name: 'Ritesh',
+  email:'ritesh.srivastava08@gmail.com',
+  etype:'hourly',
+  hourlyrate:10,
+  totalhour:16,
+  });
+
+  //Step 5, show data in console.
+    /*console.log(employees);
+    console.log("Total Income of Employee: Rs. " + employees.hourlyrate * employees.totalhour);*/
+
+  //Step 6, call function totalSalary with 'employees' object.
+  employees.total=employees.totalSalary();

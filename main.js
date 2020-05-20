@@ -1,0 +1,222 @@
+
+//https://www.npmjs.com/package/nodemon go to this link & using "npm install -g nodemon" cmd for install nodemon
+
+//   http://expressjs.com/ go to this link for read & get started->install
+
+//insatll expressjs u need to chek ur npm version, if npm version greater than 5.0 version u to run comanf in terminal
+//like "npm install express" ot low 5.0 enter npm install express --save cmd interminal
+
+//npm -v cmd for check ur npm version. // PS E:\expressjs> npm -v
+ //6.14.4
+
+//--------------------------------------------------After install expressjs display the msg in ur trminal---------
+    //+ express@4.17.1
+    //added 50 packages from 37 contributors and audited 126 packages in 15.129s
+    //found 0 vulnerabilities
+
+          /// 50 packages  means 50 modules install in node_modules file and 50 packages 126 packages in package-lock.json file
+//-------------------------------------------------------------------------------------------------- 
+
+//after install express two file are created in your folder, "node_modules" and "package-lock.json"
+//"node_modules" under this file all modules are avilable which is used by us in our project.
+//"package-lock.json" under this file all package or dependecies are avilable for our project.
+
+//using of express js our line of code reduce than like createserver and response and get the data
+
+
+//Basic routing in express js // http://expressjs.com/en/starter/basic-routing.html
+
+   //Respond with Hello World! on the homepage:
+          /*  app.get('/', function (req, res) {
+                res.send('Hello World!')
+            })*/
+
+    //Respond to POST request on the root route (/), the application’s home page:
+       /*app.post('/', function (req, res) {
+        res.send('Got a POST request')
+        }) */
+
+    //Respond to a PUT request to the /user route:
+            /*app.put('/user', function (req, res) {
+        res.send('Got a PUT request at /user')
+        }) */
+
+    //Respond to a DELETE request to the /user route:
+            /*app.delete('/user', function (req, res) {
+        res.send('Got a DELETE request at /user')
+        }) */
+
+//----------------------------------Start---------------------------------------------------------------------//
+//Example:- of basic routing
+
+            /* const express= require("express"); // add express lib
+            const app=express(); // create object of express for use all method od expressjs
+
+            app.get("/",(req, res)=>{           // "/" is use for root (localhost:3000) and send the data
+                res.send("Hello World");
+            });
+
+            app.get("/users",(req, res)=>{     // "/users" is use for root (localhost:3000/users) and send the data
+                res.send("Users access the data of Node js");
+            });
+
+            //post method is now getting error on browser and chek on postman it return data
+            app.post("/users/profile",(req, res)=>{     // "/users" is use for root (localhost:3000/users) and send the data
+            res.send("Users profile access the data of Node js");
+            });
+            app.listen(3000, ()=>console.log("Server running on port 3000"));*/
+//--------------------------ENd---------------------------------------------------------------------------------------//
+
+
+//---------------------------------------start-------------------------------------------------------------------------//
+// example of use static file in express // http://expressjs.com/en/starter/static-files.html
+   
+        /*const express= require("express"); 
+        const app=express(); 
+        //app.use(express.static('public')) // this is use for make public folder static for css and images folder,
+        // here public foldername is added in static so now remove public folder path in img and css tag in index.html page.
+
+        app.use('/abc', express.static('public')) // '/static', dis is use for rename public foldername as a abc folder name for security purpose.
+
+        app.get("/",(req, res)=>{           
+            res.sendFile(__dirname+ '/index.html');
+        });
+
+        app.get("/users",(req, res)=>{     
+        res.send("Users access the data of Node js");
+        });
+
+        app.post("/users/profile",(req, res)=>{     // "/users" is use for root (localhost:3000/users) and send the data
+        res.send("Users profile access the data of Node js");
+        });
+        app.listen(3000, ()=>console.log("Server running on port 3000"));*/
+//-----------------------------------------------End-----------------------------------------------------------------//
+
+//================================Start-====================================------------------------------------//
+
+//Create Route with single and multi Parameters using Express js and optional 
+
+  // http://expressjs.com/en/guide/routing.html  ->Route parameters
+  //Route path: /users/:userId/books/:bookId
+ //Request URL: http://localhost:3000/users/34/books/8989
+ //req.params: { "userId": "34", "bookId": "8989" }
+
+ const express= require("express"); 
+ const app=express(); 
+ //app.use(express.static('public')) 
+ app.use('/abc', express.static('public')) 
+ app.get("/",(req, res)=>{           
+     res.sendFile(__dirname+ '/index.html');
+ });
+ 
+ 
+ //pass single parameter in router
+     app.get("/users/:Id",(req, res)=>{     //hit url http://localhost:3000/users/5, return Id:'5'
+     // console.log(req.params); req is used boz we send the request in url as Id to get data
+     res.send("Users Id: " +req.params.Id);//hit url http://localhost:3000/users/5, return Users access the data of Node js: 5
+     });
+ 
+ //also pass multiple paramaeter in router like
+     app.get("/users/:Id/book/:BookId",(req, res)=>{     //hit url http://localhost:3000/users/5/book/6 
+     // console.log(req.params);
+     res.send("Users access the data of Node js: " +req.params.Id + " Book Id: " +req.params.BookId);//http://localhost:3000/users/5/book/6 //o/p:->Users access the data of Node js: 5Book Id: 6
+     });
+ 
+  // now we want to dont pass any id in url and all data is show and when pass id then show data of pass id.
+     //for this we use ? after id, it define to url, id is optional 
+ 
+     app.get("/users/:Id?",(req, res)=>{ //http://localhost:3000/users //o.p-Users Data: undefined 
+         if(req.params.Id ==undefined )
+         res.send("All Data Accessed");
+         else
+         res.send("Users Data: " +req.params.Id);//http://localhost:3000/users/4 //o.p-Users Data: 4
+     });   
+       
+ 
+ 
+     //Since the hyphen (-) and the dot (.) are interpreted literally, they can be used along with route parameters for useful purposes.
+ 
+            // Route path: /flights/:from-:to
+            // Request URL: http://localhost:3000/flights/LAX-SFO
+            // req.params: { "from": "LAX", "to": "SFO" }
+ 
+             
+            
+             //app.get("/flights/:From?-:To?",(req, res)=>{   // use with -//http://localhost:3000/flights/delhi-patna
+             app.get("/flights/:From?.:To?",(req, res)=>{    //use with . //http://localhost:3000/flights/delhi.patna
+             console.log(req.params)
+             res.send("Search for flights" + " From " +req.params.From + " To " +req.params.To);
+         });   
+ 
+ 
+ 
+ 
+     app.get("/user/profile",(req, res)=>{   
+     //app.post("/users/profile",(req, res)=>{    
+     res.send("Users profile access the data of Node js");
+     });
+     app.listen(3000, ()=>console.log("Server running on port 3000"));
+ 
+ //---------------------------------------------End------------------------------------------------------------------//
+ //--------------------Start-----------------------pattern---------regulae expression------------------------------------
+ 
+ //Here are some examples of route paths based on string patterns.
+   // ====================http://expressjs.com/en/guide/routing.html==============================
+         /*This route path will match acd and abcd.
+ 
+         app.get('/ab?cd', function (req, res) {
+         res.send('ab?cd')
+         })
+ 
+         This route path will match abcd, abbcd, abbbcd, and so on.
+ 
+         app.get('/ab+cd', function (req, res) {
+         res.send('ab+cd')
+         })*/
+    //=======================================================================================     
+     //=====================================================================================
+        /* This route path will match abcd, abxcd, abRANDOMcd, ab123cd, and so on.
+ 
+         app.get('/ab*cd', function (req, res) {
+         res.send('ab*cd')
+         })
+ 
+         This route path will match /abe and /abcde.
+ 
+         app.get('/ab(cd)?e', function (req, res) {
+         res.send('ab(cd)?e')
+         })*/
+     //==========================================================================================    
+ 
+            /* Examples of route paths based on regular expressions:
+ 
+             This route path will match anything with an “a” in it.
+ 
+             app.get(/a/, function (req, res) {
+             res.send('/a/')
+             })*/
+ //=====================================================================================================================
+         /*This route path will match butterfly and dragonfly, but not butterflyman, dragonflyman, and so on.
+ 
+         app.get(/.*fly$/, function (req, res) {
+         res.send('/.*fly$/')
+         })*/
+ 
+ 
+ 
+           //root url
+           
+          /*const express= require("express"); 
+            const app=express(); 
+            app.use('/abc', express.static('public')) 
+           //app.get("/ab?cd",(req, res)=>{  
+           //app.get("/ab+cd",(req, res)=>{ 
+           app.get("/ab*cd",(req, res)=>{ 
+            // app.get("/ab(*)cd",(req, res)=>{ //it is also true indesinf two times see result in terminal
+           //app.get(/.*fly$/,(req, res)=>{   
+               console.log(req.params);
+               res.send("Welcome to Pattern , Regular expression.");       
+               //res.send("Welcome to Pattern , Regular expression." +req.params[0]); // boz its use indexing use[0], object error
+           });*/
+ 
+ 

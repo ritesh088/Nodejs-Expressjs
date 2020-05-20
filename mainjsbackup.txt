@@ -1,0 +1,183 @@
+//Use of different template in nddejs
+//http://expressjs.com/en/guide/using-template-engines.html
+//=============================Install pub template engine=========================================
+            /*PS E:\expressjs> npm install pug
+            npm WARN deprecated core-js@2.6.11: core-js@<3 is no longer maintained and not recommended for usage due to the number of issues. Please, upgrade your dependencies to the actual version of core-js@3.
+
+            > core-js@2.6.11 postinstall E:\expressjs\node_modules\core-js
+            > node -e "try{require('./postinstall')}catch(e){}"
+
+            Thank you for using core-js ( https://github.com/zloirock/core-js ) for polyfilling JavaScript standard library!
+
+            The project needs your help! Please consider supporting of core-js on Open Collective or Patreon: 
+            > https://opencollective.com/core-js 
+            > https://www.patreon.com/zloirock 
+
+            Also, the author of core-js ( https://github.com/zloirock ) is looking for a good job -)
+
+            npm WARN expressjs@1.0.0 No repository field.
+
+            + pug@2.0.4
+            added 63 packages from 140 contributors and audited 230 packages in 27.011s
+
+            2 packages are looking for funding
+            run `npm fund` for details
+
+            found 0 vulnerabilities
+
+            PS E:\expressjs>*/
+            //after install write code app.set('view engine', 'pug') for tell the function which tem is use, create view 
+            //folder in public folder for create html pages.
+
+            //for use ejs template wirtecode npm install ejs
+
+            /* PS E:\expressjs> npm install ejs
+
+> ejs@3.1.2 postinstall E:\expressjs\node_modules\ejs
+> node --harmony ./postinstall.js
+
+Thank you for installing EJS: built with the Jake JavaScript build tool (https://jakejs.com/)
+
+npm WARN expressjs@1.0.0 No repository field.
+
++ ejs@3.1.2
+added 15 packages from 8 contributors and audited 249 packages in 7.039s
+
+2 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+PS E:\expressjs> npm install ejs
+ */
+ 
+ 
+/*// for pug
+
+html
+  head
+    title= title
+  body
+    h1= message
+//for twig
+
+    <html>
+    <head>
+       <title>{{ title }}</title>
+    </head>
+    <body>
+        <h1>{{ title }}</h1>
+        <p>{{ message }}</p>
+    </body>
+</html>
+
+    //for ejs
+
+    <html>
+    <head>
+       <title><%= title %></title>
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <p><%= message %></p>
+    </body>
+</html>*/
+
+//  "username:req.body.username,password:req.body.password" when post method is use we use req.body.username not use
+  // reqq.params.username,
+     // when post method is use then display the data by post & get the data and display for this fistlly we install
+     //"body parser package".
+
+      //jab post method se data post ho rha h or us data ko get krne k body parser package install krenge or require krenge
+       //apne project tab data display hoga. (https://github.com/expressjs/body-parser)
+        //npm install body-parser
+
+
+// body-parse kya karta h ki jo data post m jata h usko url m import karta h or import karne ke baad body m parse karta h.
+  //to usko pass karne k lie jo method h usko use krna hoha like
+   // // create application/x-www-form-urlencoded parser
+                //app.use(bodyParser.urlencoded({ extended: false }))
+
+    // create application/json parser
+         // app.use( bodyParser.json())
+
+
+//=========================Simple use of template===============================================//
+    /*const express= require("express"); 
+    const app=express(); 
+    app.use('/abc', express.static('public'));
+    //app.set('view engine', 'pug');
+    //app.set('view engine', 'ejs');
+    app.set('view engine', 'twig');
+    app.set('views', './public/views');
+    app.get('/',(req,res)=>{
+        res.render('index',{title:"Node js", message:"Welcome to node js website"});
+        //when use any template engine then use 'render' kisi v template ko render kiya jata h islie render 
+
+    });
+
+    app.listen(3000, ()=>console.log("Server running on port 3000"));*/
+//========================End of simple template use======================================================
+
+//===================Start How to handle get and parse post request in express.js | body parsing middleware=========
+
+const express= require("express"); 
+const bodyParser = require('body-parser'); // add this for post data display by intall npm install body-parser
+const app=express(); 
+app.use('/abc', express.static('public'));
+//app.set('view engine', 'pug');
+//app.set('view engine', 'ejs');
+app.set('view engine', 'twig');
+app.set('views', './public/views');
+
+// parse application/x-www-form-urlencoded parser
+      app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json parser
+         app.use( bodyParser.json())
+
+// create application/json parser
+ //var jsonParser = bodyParser.json()
+
+// create application/x-www-form-urlencoded parser
+// var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+
+app.get('/',(req,res)=>{
+    res.render('index',{title:"Login Form", message:"Enter UserName and Password."});
+    //when use any template engine then use 'render' kisi v template ko render kiya jata h islie render 
+
+});
+
+app.post('/login',(req,res)=>{
+    res.render('login',{title:"User Details", username:req.body.username,password:req.body.password});
+});
+
+//another way to use this as same
+/*app.post('/login',urlencodedParser,function(req,res) {
+res.send('Welcome, '  + req.body.username)
+})
+
+
+
+app.post('/',jsonParser,(req,res)=>{
+   console.log(req.body);
+res.render('login',{title:"User Details", username:req.body.username,password:req.body.password});
+});*/
+
+
+app.get('/about/:a-:b',(req,res)=>{
+    res.render('about',{title:"about",
+    sum:parseInt(req.params.a) + parseInt(req.params.b),
+    sub:parseInt(req.params.a) - parseInt(req.params.b),
+    mul:parseInt(req.params.a) * parseInt(req.params.b),
+    div:parseInt(req.params.a) / parseInt(req.params.b),
+
+});
+    
+
+});
+
+app.listen(3000, ()=>console.log("Server running on port 3000"));
+
+//======End How to handle get and parse post request in express.js | body parsing middleware==========================
